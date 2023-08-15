@@ -1,7 +1,7 @@
 const { query } = require("../bancodedados/conexao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const senha_segura = require("../senha_segura");
+const senhaSegura = require("../senhaSegura");
 
 const login = async (req, res) => {
   try {
@@ -19,7 +19,7 @@ const login = async (req, res) => {
     }
     let data = await query("select * from usuarios where email = $1", [email]);
 
-    if (data.rowCount == 0) {
+    if (!data.rowCount) {
       return res.status(400).json({
         mensagem: "E-mail não cadastrado em nosso sistema",
       });
@@ -39,7 +39,7 @@ const login = async (req, res) => {
       {
         id: usuarioSemSenha.id,
       },
-      senha_segura,
+      senhaSegura,
       {
         expiresIn: "1h",
       }

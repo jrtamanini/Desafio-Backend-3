@@ -1,6 +1,5 @@
 const { query } = require("../bancodedados/conexao");
 const bcrypt = require("bcrypt");
-const { senha_segura } = require("../senha_segura");
 
 const cadastrar = async (req, res) => {
   try {
@@ -36,7 +35,7 @@ const cadastrar = async (req, res) => {
     let senhaCriptografada = await bcrypt.hash(senha, 10);
 
     let dataInsert = await query(
-      "insert into usuarios (nome, email, senha) values ($1, $2, $3) RETURNING id, nome, email",
+      "insert into usuarios (nome, email, senha) values ($1, $2, $3) returning id, nome, email",
       [nome, email, senhaCriptografada]
     );
 
@@ -70,27 +69,7 @@ const listarUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO , FALTA TESTAR
-
-const listarCategorias = async (req, res) => {
-  try {
-    const usuarioId = req.usuarioId;
-    const query = "select * from categorias where usuario.id = $1";
-
-    let data = await query(query, usuarioId);
-
-    if ((data.rowCount = 0)) {
-      return res.status(400).json({
-        mensagem: "Não existem categorias cadastradas.",
-      });
-    }
-    return res.status(200).json(data.rows);
-  } catch (error) {
-    return res.status(500).json({
-      mensagem: error.message,
-    });
-  }
-}; // FEITO,FALTA TESTAR .
+}; // FEITO E TESTADO
 
 const atualizarUsuario = async (req, res) => {
   try {
@@ -98,6 +77,7 @@ const atualizarUsuario = async (req, res) => {
     const usuarioId = req.usuarioId;
     const novoEmail = email;
     const consultaEmail = "select * from usuarios where email = $1";
+    const atualizaCadastro = "update usuarios set email = $1 where id = $2";
 
     if (!nome) {
       return res.status(400).json({
@@ -115,16 +95,15 @@ const atualizarUsuario = async (req, res) => {
       });
     }
 
-    let data = await query(consultaEmail, novoEmail);
+    let data = await query(consultaEmail, [novoEmail]);
     if (data.rowCount > 0) {
       return res.status(400).json({
         mensagem: "O email informado já está cadastrado",
       });
     }
     let dataInsert = await query(
-      "uptade usuarios set email = $1 where id = $2",
-      novoEmail,
-      usuarioId
+      "update usuarios set email = $1 where id = $2",
+      [novoEmail, usuarioId]
     );
 
     return res.status(201).json(dataInsert.rows[0]);
@@ -133,11 +112,75 @@ const atualizarUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO, FALTA TESTAR
+}; // FEITO E TESTADO
+
+const listarCategoriasUsuario = async (req, res) => {
+  try {
+    const usuarioId = req.usuarioId;
+    const consulta = "select * from categorias where usuario.id = $1";
+
+    let data = await query(consulta, usuarioId);
+
+    if ((data.rowCount = 0)) {
+      return res.status(400).json({
+        mensagem: "Não existem categorias cadastradas.",
+      });
+    }
+    return res.status(200).json(data.rows);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: error.message,
+    });
+  }
+}; // FEITO E TESTADO
+
+const detalharCategoriasUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const consulta = "select descricao from categorias where id = $1";
+
+    let data = await query(consulta, [id]);
+
+    if (data.rowCount == 0) {
+      return res.status(400).json({
+        mensagem: "Categoria não encontrada! ",
+      });
+    }
+    return res.status(200).json(data.rows);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: error.message,
+    });
+  }
+}; //FEITO E TESTADO
+
+const cadastrarCategoriaUsuario = async (req, res) => {
+  try {
+    const usuarioId = req.usuarioId;
+    const consulta =
+      "insert into categorias (usuarios_id, descricao) values ($1, $2) returning id, descricao";
+
+    if (!req.body) {
+      res.status(400).json({
+        mensagem: "A descrição da categoria deve ser informada.",
+      });
+    }
+
+    let data = await query(consulta, [usuarioId, req.body]);
+
+    return res.status(201).json({});
+  } catch (error) {
+    return res.status(400).json({
+      mensagem: error.message,
+    });
+  }
+}; // FEITO E TESTADO
 
 module.exports = {
   cadastrar,
   listarUsuario,
-  listarCategorias,
+  listarCategoriasUsuario,
+  detalharCategoriasUsuario,
+  cadastrarCategoriaUsuario,
   atualizarUsuario,
 };

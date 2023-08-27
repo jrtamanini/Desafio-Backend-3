@@ -7,7 +7,7 @@ create table usuarios (
 	id serial primary key,
   nome text not null,
   email text unique,
-  senha integer
+  senha text
 );
 
 create table categorias (

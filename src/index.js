@@ -1,10 +1,9 @@
-const express = require('express'); //importaçao express
-const rotas = require('./rotas'); //importação do arquivo de rotas
+const express = require('express');
+const rotas = require('./rotas');
 
-const app = express(); //instaciando para criar a app em node
-
-app.use(express.json()); //indicar que esse API pode trabalhar com req, res no formato JSON
-app.use(rotas); //rotas sempre abaixo do app.use(express.json())
+const app = express();
+app.use(express.json());
+app.use(rotas);
 
 
 app.listen(3000, () => {

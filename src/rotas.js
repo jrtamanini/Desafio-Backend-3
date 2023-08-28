@@ -1,4 +1,4 @@
-const express = require("express"); //importação express
+const express = require("express");
 const { login } = require("./controladores/login");
 const {
   listarCategoriasUsuario,

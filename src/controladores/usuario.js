@@ -51,7 +51,7 @@ const cadastrarUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO.
+};
 
 const detalharUsuario = async (req, res) => {
   try {
@@ -74,7 +74,7 @@ const detalharUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO
+};
 
 const atualizarUsuario = async (req, res) => {
   try {
@@ -116,7 +116,7 @@ const atualizarUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO
+};
 
 const listarCategoriasUsuario = async (req, res) => {
   try {
@@ -136,7 +136,7 @@ const listarCategoriasUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO
+};
 
 const detalharCategoriasUsuario = async (req, res) => {
   try {
@@ -156,7 +156,7 @@ const detalharCategoriasUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; //FEITO E TESTADO
+};
 
 const cadastrarCategoriaUsuario = async (req, res) => {
   try {
@@ -181,7 +181,7 @@ const cadastrarCategoriaUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO
+};
 
 const atualizarCategoriasUsuario = async (req, res) => {
   try {
@@ -229,7 +229,7 @@ const atualizarCategoriasUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO E TESTADO
+};
 
 const excluirCategoriaUsuario = async (req, res) => {
   try {
@@ -277,7 +277,7 @@ const excluirCategoriaUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // 75%
+};
 
 const cadastrarTransacaoUsuario = async (req, res) => {
   const { descricao, valor, data, categoria_id, tipo } = req.body;
@@ -332,7 +332,7 @@ const cadastrarTransacaoUsuario = async (req, res) => {
   return res.status(200).json({
     respostaUsuario,
   });
-}; // ERRO ESQUISITO.
+};
 
 const listarTransacaoUsuario = async (req, res) => {
   try {
@@ -368,7 +368,7 @@ const listarTransacaoUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; // FEITO
+};
 
 const excluirTransacaoUsuario = async (req, res) => {
   try {
@@ -408,7 +408,7 @@ const excluirTransacaoUsuario = async (req, res) => {
       mensagem: error.message,
     });
   }
-}; //
+}
 
 const extratoTransacaoUsuario = async (req, res) => {
   const { usuarioId } = req;
@@ -428,7 +428,7 @@ const extratoTransacaoUsuario = async (req, res) => {
 
   if (somandoEntradaUsuario.rowCount > 0) {
   }
-}; // ...
+};
 
 module.exports = {
   cadastrarUsuario,
